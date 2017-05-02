@@ -113,7 +113,8 @@ export default class DetailPeoplePage extends Component {
             ud = await response.json();
             var bookList = ud.list;
             var jsonData={
-                bookList:bookList
+                bookList:bookList,
+                uid:this.props.uid
             }
             var route = {
                 id: contant.idList.BookListPageSellingPage,

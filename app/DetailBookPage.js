@@ -110,25 +110,48 @@ export default class DetailBookPage extends Component {
                         <ListItem itemDivider>
                             <Text>  </Text>
                         </ListItem>
-                        <ListItem >
-                            <Button style={{ flex: 1 }} block success onPress={this.toBuy}>
-                                <Icon style={{ color: "#FFFFFF" }} name="ios-cart" />
-                            </Button>
-                        </ListItem>
+                        {
+                            () => {
+                                if (this.props.uid == contant.USER.uid) {
+                                    //同一个人的书，当然不能买
+                                    return null;
+
+                                }//不是
+                                else return (
+                                    <ListItem >
+                                        <Button style={{ flex: 1 }} block success onPress={this.toBuy}>
+                                            <Icon style={{ color: "#FFFFFF" }} name="ios-cart" />
+                                        </Button>
+                                    </ListItem>);
+                            }
+
+                        }
+
                         <ListItem itemDivider>
                             <Text>  </Text>
                         </ListItem>
-                        <ListItem >
-                            <Left>
-                                <Icon style={{ color: "#0066FF" }} name="people" />
-                                <Text>拥有人:   {this.props.uname}</Text>
-                            </Left>
-                            <Right>
-                                <Button transparent onPress={this.toDetailPeople}>
-                                    <Icon name="md-arrow-forward" />
-                                </Button>
-                            </Right>
-                        </ListItem>
+                        {
+                            () => {
+                                if (this.props.showOwner == true) {
+                                    //显示不显示拥有者
+                                    return (
+                                        <ListItem >
+                                            <Left>
+                                                <Icon style={{ color: "#0066FF" }} name="people" />
+                                                <Text>拥有人:   {this.props.uname}</Text>
+                                            </Left>
+                                            <Right>
+                                                <Button transparent onPress={this.toDetailPeople}>
+                                                    <Icon name="md-arrow-forward" />
+                                                </Button>
+                                            </Right>
+                                        </ListItem>);
+
+                                }//不是
+                                else return null;
+                            }
+
+                        }
                         <ListItem itemDivider>
                             <Text>  </Text>
                         </ListItem>
@@ -177,7 +200,7 @@ export default class DetailBookPage extends Component {
 
 
     }
-  async  toDetailPeople() {
+    async  toDetailPeople() {
         var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.SEARCH_PEOPLE_BY_UID + "?" + "uid=" + this.props.uid;
         var response;
         var ud;

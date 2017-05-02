@@ -272,7 +272,7 @@ export default class SearchBookPage extends Component {
 
     }
     toDetailBookPage(bookData) {
-        bookData.showBuyItem = true;//有买选项
+        bookData.showOwner = true;//拥有人选项
 
         var route = {
             id: contant.idList.DetailBookPage,

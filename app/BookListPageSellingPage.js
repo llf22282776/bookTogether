@@ -77,7 +77,15 @@ export default class BookListPageSellingPage extends Component {
         console.log(this.props);
         console.log("bookData");
         console.log(bookData);
-        bookData.showBuyItem = true;//有买选项
+        if(this.props.uid == contant.USER.uid){
+             bookData.showBuyItem = false;//不能买自己的书
+
+        }else{
+             bookData.showBuyItem = true;//有买选项
+        }
+
+       
+        bookData.showOwner=false;//展示拥有者,因为是调过来的，就不展示了
         var route = {
             id: contant.idList.DetailBookPage,
             passProps: bookData,
