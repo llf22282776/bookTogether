@@ -25,7 +25,6 @@ export default class SellBookPage extends Component {
             company: "",
             productor: "",
             price: 0,
-
             x:0.000,
             y:0.000,
         }
@@ -49,18 +48,19 @@ export default class SellBookPage extends Component {
                         <Text>图片</Text>
                     </Button>
                     <MapView
-                        style={contant.styles.map}
+                        style={contant.styles.map1}
                         trafficEnabled={contant.mapState.trafficEnabled}
                         baiduHeatMapEnabled={contant.mapState.baiduHeatMapEnabled}
                         zoom={contant.mapState.zoom}
-                        mapType={contant.mapState.mapType}
+                        mapType={contant.mapState.mayType1}
                         center={contant.mapState.center}
                         
-
+                        markers={[{longitude:this.state.x,latitude:this.state.y,title:"卖书点"}]}
                         onMarkerClick={(e) => {
                             //点被点一下，下边列表刷新
                            
                         }}
+
                         onMapClick={(e) => {
                             this.setState({x:e.longitude,y:e.latitude});
                         }}
@@ -105,6 +105,7 @@ export default class SellBookPage extends Component {
                         </ListItem>
 
                     </List>
+                    
                     <Button full info onPress={this.sellBook} >
                         <Icon name="md-desktop" />
                         <Text>卖书</Text>
@@ -174,3 +175,4 @@ export default class SellBookPage extends Component {
 
     }
 }
+

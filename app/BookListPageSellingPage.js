@@ -14,7 +14,6 @@ import {
 import { Thumbnail, StyleProvider, Container, Header, Title, CheckBox, Content, Label, List, ListItem, Footer, Form, Item, FooterTab, Left, Button, Body, Right, Icon, InputGroup, Input, Card, CardItem, Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import * as contant from "../app/contant"
-import TabNavigator from 'react-native-tab-navigator';
 var ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 export default class BookListPageSellingPage extends Component {
     constructor(props) {
@@ -24,7 +23,10 @@ export default class BookListPageSellingPage extends Component {
             bookList:this.props.bookList
         }
         this.toLast = this.toLast.bind(this);
-        this.toDetailBook= this.toDetailBook.bind(this);
+        this.toDetailBook1= this.toDetailBook1.bind(this);
+        this.toHelloWord=this.toHelloWord.bind(this);
+        this.renderRowFunc=this.renderRowFunc.bind(this);
+        console.log(this);
     }
     render() {
         return (
@@ -63,16 +65,20 @@ export default class BookListPageSellingPage extends Component {
                 <Text note>{data.det.productor}</Text>
             </Body>
             <Right>
-                <Button info transparent iconRight onPress={()=>{this.toDetailBook(data);}}>
+                <Button info transparent iconRight onPress={()=>{this.toDetailBook1(data);}}>
                     <Text note>{data.det.price}</Text>
                     <Icon name="ios-arrow-forward" />
                 </Button>
             </Right>
         </ListItem>);
 
-    }
-    
-    toDetailBook(bookData){
+    } 
+    toHelloWord(){
+        Alert.alert("","hello world!")
+
+
+    }  
+    toDetailBook1(bookData){
         console.log("this.props");
         console.log(this.props);
         console.log("bookData");
@@ -92,8 +98,6 @@ export default class BookListPageSellingPage extends Component {
             type: "Right"
         }
         this.props.navigator.push(route);
-    
-
     }
 
 

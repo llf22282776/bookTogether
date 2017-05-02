@@ -31,12 +31,13 @@ export const idList = {
     HomePage: "HomePage",
     DetailBookPage: "DetailBookPage",
     DetailPeoplePage: "DetailPeoplePage",
-    BookListPageSellingPage:"BookListPageSellingPage"
+    BookListPageSellingPage: "BookListPageSellingPage"
 
 
 }
 export const mapState = {
     mayType: MapTypes.NORMAL,
+    mayType1:MapTypes.SATELLITE,
     zoom: 15,
     center: {
         longitude: 113.981718,
@@ -47,10 +48,18 @@ export const mapState = {
 
 
 }
+
 export const styles = StyleSheet.create({
     map: {
 
         height: 350,
+
+        borderWidth: 1,
+        borderColor: '#000000',
+    },
+    map1: {
+
+        height: 500,
 
         borderWidth: 1,
         borderColor: '#000000',
@@ -63,9 +72,10 @@ export const centerMark = {
 export const SERVER_ROOT = "http://192.168.191.2:8080/BookFlow/";
 export const SERVER_SERVICE = {
     LOG_IN: "LoginAction",//登陆
-    SEARCH_BOOK_BY_NAME:"SearchBooksByBookNameAction",
-    SEARCH_PEOPLE_BY_UID:"SearchPeopleByPeopleIdAction",
-    SEARCH_BOOKS_SELLING:"SearchBooksByRecordAction"
+    SEARCH_BOOK_BY_NAME: "SearchBooksByBookNameAction",
+    SEARCH_PEOPLE_BY_UID: "SearchPeopleByPeopleIdAction",
+    SEARCH_BOOKS_SELLING: "SearchBooksByRecordAction",
+    SEARCH_PEOPLE_BY_NAME: "SearchPeoplesByPeopleNameAction"
 
 
 }

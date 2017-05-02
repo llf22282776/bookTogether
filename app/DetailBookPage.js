@@ -56,6 +56,8 @@ export default class DetailBookPage extends Component {
         this.toDetailProductor = this.toDetailProductor.bind(this);
         this.toDetailBookDes = this.toDetailBookDes.bind(this);
         this.renderRowFunc = this.renderRowFunc.bind(this);
+        this.showOwnerOrNot = this.showOwnerOrNot.bind(this);
+        this.showBuyOptions = this.showBuyOptions.bind(this);
     }
     render() {
         return (
@@ -111,45 +113,15 @@ export default class DetailBookPage extends Component {
                             <Text>  </Text>
                         </ListItem>
                         {
-                            () => {
-                                if (this.props.uid == contant.USER.uid) {
-                                    //同一个人的书，当然不能买
-                                    return null;
 
-                                }//不是
-                                else return (
-                                    <ListItem >
-                                        <Button style={{ flex: 1 }} block success onPress={this.toBuy}>
-                                            <Icon style={{ color: "#FFFFFF" }} name="ios-cart" />
-                                        </Button>
-                                    </ListItem>);
-                            }
-
+                            this.showBuyOptions()
                         }
 
                         <ListItem itemDivider>
                             <Text>  </Text>
                         </ListItem>
                         {
-                            () => {
-                                if (this.props.showOwner == true) {
-                                    //显示不显示拥有者
-                                    return (
-                                        <ListItem >
-                                            <Left>
-                                                <Icon style={{ color: "#0066FF" }} name="people" />
-                                                <Text>拥有人:   {this.props.uname}</Text>
-                                            </Left>
-                                            <Right>
-                                                <Button transparent onPress={this.toDetailPeople}>
-                                                    <Icon name="md-arrow-forward" />
-                                                </Button>
-                                            </Right>
-                                        </ListItem>);
-
-                                }//不是
-                                else return null;
-                            }
+                            this.showOwnerOrNot()
 
                         }
                         <ListItem itemDivider>
@@ -263,4 +235,41 @@ export default class DetailBookPage extends Component {
 
 
     }
+    showOwnerOrNot() {
+
+        if (this.props.showOwner == true) {
+        
+            //显示不显示拥有者
+            return (
+                <ListItem >
+                    <Left>
+                        <Icon style={{ color: "#0066FF" }} name="people" />
+                        <Text>拥有人:   {this.props.uname}</Text>
+                    </Left>
+                    <Right>
+                        <Button transparent onPress={this.toDetailPeople}>
+                            <Icon name="md-arrow-forward" />
+                        </Button>
+                    </Right>
+                </ListItem>);
+
+        }//不是
+        else return null;
+    }
+
+
+    showBuyOptions() {
+        if (this.props.uid == contant.USER.uid) {
+            //同一个人的书，当然不能买
+            return null;
+
+        }//不是
+        else return (
+            <ListItem >
+                <Button style={{ flex: 1 }} block success onPress={this.toBuy}>
+                    <Icon style={{ color: "#FFFFFF" }} name="ios-cart" />
+                </Button>
+            </ListItem>);
+    }
+
 }

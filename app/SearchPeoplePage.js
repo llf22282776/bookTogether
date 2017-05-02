@@ -27,6 +27,7 @@ export default class SearchPeoplePage extends Component {
         this.renderRowFunc = this.renderRowFunc.bind(this);
         this.toDetailPeople=this.toDetailPeople.bind(this);
         this.findPeoples=this.findPeoples.bind(this);
+        this.getPeoples=this.getPeoples.bind(this);
     }
     render() {
         return (
@@ -52,13 +53,46 @@ export default class SearchPeoplePage extends Component {
 
     }
     onTextChange(data) {
+
         this.setState({ uname: data });
 
 
 
     }
     findPeoples(){
-        this.setState({peopleList:contant.people_test});
+        //this.setState({peopleList:contant.people_test});
+        this.getPeoples();
+    }
+
+    async getPeoples(){
+         var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.SEARCH_PEOPLE_BY_NAME + "?" + "name=" + this.state.uname;
+            var response;
+            var ud;
+            try {
+                response = await fetch(
+                    url, {
+                        method: "GET",
+                    });
+                console.log(response);
+                ud = await response.json();
+                var peopleDataList = ud.list;
+                this.setState({ peopleList: peopleDataList });
+
+            } catch (e) {
+
+                console.log(e);
+                //异常
+                Alert.alert("错误", "搜索失败\n");
+
+
+
+            }
+
+
+
+
+
+
     }
     renderRowFunc(data) {
         return (<ListItem>
@@ -66,7 +100,7 @@ export default class SearchPeoplePage extends Component {
             <Body>
                 <Text >{data.uname}</Text>
                 <Text note>年龄:{data.age}</Text>
-                <Text note>性别:{data.sex}</Text>
+                <Text note>性别:{data.sex == 1 ? "男" : "女"}</Text>
             </Body>
             <Right>
                 <Button info transparent iconRight onPress={()=>{this.toDetailPeople(data)}}>

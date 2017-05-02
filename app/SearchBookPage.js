@@ -227,7 +227,17 @@ export default class SearchBookPage extends Component {
         console.log(bookDataList);
         var positionArray = [];
         for (var i = 0; i < bookDataList.length; i++) {
+            if (i == 0) {
+                this.setState(
+                    {
+                        center: {
+                            longitude:bookDataList[i].x,
+                            latitude: bookDataList[i].y
+                                }
+                    });
 
+
+            }
             var marker = {
                 longitude: bookDataList[i].x,
                 latitude: bookDataList[i].y,
@@ -238,6 +248,7 @@ export default class SearchBookPage extends Component {
         }
         console.log(positionArray);
         this.setState({ markers: positionArray });//重新渲染坐标
+
 
 
 
@@ -304,7 +315,6 @@ var styles = StyleSheet.create({
     map: {
 
         height: 350,
-
         borderWidth: 1,
         borderColor: '#000000',
     }
