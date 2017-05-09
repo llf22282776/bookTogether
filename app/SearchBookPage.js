@@ -285,11 +285,11 @@ export default class SearchBookPage extends Component {
     toDetailBookPage(bookData) {
         bookData.showOwner = true;//拥有人选项
         if(bookData.uid == contant.USER.uid){
-            //看看这个书是不是自己的
+            //看看这个书是不是自己的费孟君
             bookData.showBuyItem=false;
         }else{
             
-            bookData.showBuyItem=false;
+            bookData.showBuyItem=true;
         }
         var route = {
             id: contant.idList.DetailBookPage,

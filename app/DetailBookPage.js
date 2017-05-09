@@ -46,6 +46,7 @@ export default class DetailBookPage extends Component {
         super(props);
         this.state = {
             commentNums: this.props.comt.length,
+            bid:this.props.bid,
 
         }
         console.log(this.props);
@@ -167,7 +168,35 @@ export default class DetailBookPage extends Component {
 
 
     }
-    toBuy() {
+    async toBuy() {
+        //买书
+                //买过的书
+        var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.BUY_BOOK + "?" + "uid=" + contant.USER.uid + "&bid=" + this.state.bid ;
+        var response;
+        var ud;
+        try {
+            response = await fetch(
+                url, {
+                    method: "GET",
+                });
+           
+            ud = await response.json();
+            if(ud.isSucceed == "true" || ud.isSucceed == true){
+
+                  Alert.alert("成功","您的余额还有:"+ud.restMoney);
+            }else {
+                  Alert.alert("成功","您的余额不足");
+
+            }
+        } catch (e) {
+            console.log(response);
+            console.log(e);
+            //异常
+            Alert.alert("错误", "查看卖过的书失败\n");
+
+
+
+        }
 
 
     }
