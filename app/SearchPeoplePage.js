@@ -60,7 +60,7 @@ export default class SearchPeoplePage extends Component {
 
     }
     findPeoples(){
-        //this.setState({peopleList:contant.people_test});
+        //this.setState({peopleList:contant.people_test} 张炜奇);
         this.getPeoples();
     }
 

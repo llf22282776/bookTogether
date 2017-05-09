@@ -171,7 +171,7 @@ export default class DetailBookPage extends Component {
     async toBuy() {
         //买书
                 //买过的书
-        var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.BUY_BOOK + "?" + "uid=" + contant.USER.uid + "&bid=" + this.state.bid ;
+        var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.BUY_BOOK + "?" + "uid=" + contant.USER.uid + "&bid=" + this.state.bid + "&time="+contant.getNowFormatDate() ;
         var response;
         var ud;
         try {
@@ -184,15 +184,18 @@ export default class DetailBookPage extends Component {
             if(ud.isSucceed == "true" || ud.isSucceed == true){
 
                   Alert.alert("成功","您的余额还有:"+ud.restMoney);
+                  this.toLast();
+                 
             }else {
-                  Alert.alert("成功","您的余额不足");
-
+                  Alert.alert("失败","您的余额不足");
+                  this.toLast();
+               
             }
         } catch (e) {
             console.log(response);
             console.log(e);
             //异常
-            Alert.alert("错误", "查看卖过的书失败\n");
+            Alert.alert("错误", "买书失败\n");
 
 
 
