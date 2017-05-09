@@ -5,7 +5,7 @@ import {
     StyleSheet,
     View,
     ListView,
-    Navigator,
+     
     Image,
     Alert,
     TextInput,

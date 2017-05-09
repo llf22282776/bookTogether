@@ -5,7 +5,7 @@ import {
     StyleSheet,
     View,
     ListView,
-    Navigator,
+
     Image,
     Alert,
     TextInput,
@@ -20,21 +20,21 @@ export default class SellBookPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            name:"",
+            name: "",
             des: "",
             company: "",
             productor: "",
             price: 0,
-            x:0.000,
-            y:0.000,
+            x: 0.000,
+            y: 0.000,
         }
 
         this.priceChange = this.priceChange.bind(this);
         this.productorChange = this.productorChange.bind(this);
         this.companyChange = this.companyChange.bind(this);
         this.desChange = this.desChange.bind(this);
-        this.sellBook=this.sellBook.bind(this);
-        this.nameChange=this.nameChange.bind(this);
+        this.sellBook = this.sellBook.bind(this);
+        this.nameChange = this.nameChange.bind(this);
     }
     render() {
         return (
@@ -54,18 +54,18 @@ export default class SellBookPage extends Component {
                         zoom={contant.mapState.zoom}
                         mapType={contant.mapState.mayType1}
                         center={contant.mapState.center}
-                        
-                        markers={[{longitude:this.state.x,latitude:this.state.y,title:"卖书点"}]}
+
+                        markers={[{ longitude: this.state.x, latitude: this.state.y, title: "卖书点" }]}
                         onMarkerClick={(e) => {
                             //点被点一下，下边列表刷新
-                           
+
                         }}
 
                         onMapClick={(e) => {
-                            this.setState({x:e.longitude,y:e.latitude});
+                            this.setState({ x: e.longitude, y: e.latitude });
                         }}
                     />
-                    
+
 
 
 
@@ -83,8 +83,8 @@ export default class SellBookPage extends Component {
                         <ListItem itemDivider>
                             <Text>  </Text>
                         </ListItem>
-                          <ListItem>
-                            <TextInput style={{ flex: 1, backgroundColor: "#ffffff" }} placeholder="书名" onChangeText={this.productorChange} />
+                        <ListItem>
+                            <TextInput style={{ flex: 1, backgroundColor: "#ffffff" }} placeholder="书名" onChangeText={this.nameChange} />
 
                         </ListItem>
                         <ListItem>
@@ -105,7 +105,7 @@ export default class SellBookPage extends Component {
                         </ListItem>
 
                     </List>
-                    
+
                     <Button full info onPress={this.sellBook} >
                         <Icon name="md-desktop" />
                         <Text>卖书</Text>
@@ -123,8 +123,8 @@ export default class SellBookPage extends Component {
     desChange(data) {
         this.setState({ des: data });
     }
-    nameChange(data){
-          this.setState({ name: data });
+    nameChange(data) {
+        this.setState({ name: data });
     }
     companyChange(data) {
         this.setState({ company: data });
@@ -135,7 +135,7 @@ export default class SellBookPage extends Component {
     priceChange(data) {
         this.setState({ price: data });
     }
-    sellBook(){
+    async sellBook() {
         // var bookMsg={
         //      name:this.state.name,
         //      uid:contant.USER.uname,
@@ -150,21 +150,59 @@ export default class SellBookPage extends Component {
         //         }
 
         // }
-           var bookMsg={
-             bid:3,
-             uname:contant.USER.name,
-             name:this.state.name,
-             uid:contant.USER.uname,
-             x:this.state.x,
-             y:this.state.y,
-             det:{
-                des:this.state.des,
-                productor:this.state.productor,
-                company:this.state.company,
-                price:this.state.price,
-                images:[]
+        var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.SELL_BOOK + "?";
+        url = url + "name=" + this.state.name + "&";
+        url = url + "uid=" + contant.USER.uid + "&";
+        url = url + "x=" + this.state.x + "&";
+        url = url + "y=" + this.state.y + "&";
+        url = url + "des=" + this.state.des + "&";
+        url = url + "productor=" + this.state.productor + "&";
+        url = url + "company=" + this.state.company + "&";
+        url = url + "price=" + this.state.price;
+
+        var response;
+        var ud;
+        try {
+            response = await fetch(
+                url, {
+                    method: "GET",
+                });
+            console.log(response);
+            ud = await response.json();
+            
+            var isSucceed = ud.isSucceed;
+            if(isSucceed == "true" || isSucceed == true ){
+                //
+                 Alert.alert("成功", "卖书成功\n");
+
+            }
+        
+        } catch (e) {
+            console.log(response);
+            console.log(e);
+            //异常
+            Alert.alert("错误", "卖书失败\n");
+        }
+
+
+
+
+
+        var bookMsg = {
+            bid: 3,
+            uname: contant.USER.name,
+            name: this.state.name,
+            uid: contant.USER.uname,
+            x: this.state.x,
+            y: this.state.y,
+            det: {
+                des: this.state.des,
+                productor: this.state.productor,
+                company: this.state.company,
+                price: this.state.price,
+                images: []
             },
-            comt:[]
+            comt: []
 
         }
 

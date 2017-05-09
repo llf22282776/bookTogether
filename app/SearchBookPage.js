@@ -5,7 +5,7 @@ import {
     StyleSheet,
     View,
     ListView,
-    Navigator,
+     
     Image,
     Alert,
     TextInput,
@@ -284,7 +284,13 @@ export default class SearchBookPage extends Component {
     }
     toDetailBookPage(bookData) {
         bookData.showOwner = true;//拥有人选项
-
+        if(bookData.uid == contant.USER.uid){
+            //看看这个书是不是自己的
+            bookData.showBuyItem=false;
+        }else{
+            
+            bookData.showBuyItem=false;
+        }
         var route = {
             id: contant.idList.DetailBookPage,
             passProps: bookData,

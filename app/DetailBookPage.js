@@ -5,7 +5,6 @@ import {
     StyleSheet,
     View,
     ListView,
-    Navigator,
     Image,
     Alert,
     TextInput,
@@ -259,7 +258,7 @@ export default class DetailBookPage extends Component {
 
 
     showBuyOptions() {
-        if (this.props.uid == contant.USER.uid) {
+        if (this.props.showBuyItem == false) {
             //同一个人的书，当然不能买
             return null;
 

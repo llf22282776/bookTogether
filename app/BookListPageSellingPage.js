@@ -5,7 +5,6 @@ import {
     StyleSheet,
     View,
     ListView,
-    Navigator,
     Image,
     Alert,
     TextInput,
@@ -20,12 +19,13 @@ export default class BookListPageSellingPage extends Component {
         super(props);
         this.state = {
             uname: "",
-            bookList:this.props.bookList
+            bookList: this.props.bookList
         }
         this.toLast = this.toLast.bind(this);
-        this.toDetailBook1= this.toDetailBook1.bind(this);
-        this.toHelloWord=this.toHelloWord.bind(this);
-        this.renderRowFunc=this.renderRowFunc.bind(this);
+        this.toDetailBook1 = this.toDetailBook1.bind(this);
+        this.toHelloWord = this.toHelloWord.bind(this);
+        this.renderRowFunc = this.renderRowFunc.bind(this);
+        this.renderTitle = this.renderTitle.bind(this);
         console.log(this);
     }
     render() {
@@ -38,9 +38,9 @@ export default class BookListPageSellingPage extends Component {
                             <Icon name="md-arrow-back" />
                         </Button>
                     </Left>
-                    <Body>
-                        <Title>卖书列表</Title>
-                    </Body>
+                    {
+                        this.renderTitle()
+                    }
                 </Header>
                 <Content>
                     <ListView enableEmptySections dataSource={ds.cloneWithRows(this.state.bookList)} renderRow={this.renderRowFunc} />
@@ -57,6 +57,21 @@ export default class BookListPageSellingPage extends Component {
 
 
     }
+    renderTitle() {
+        if (this.props.title != undefined && this.props.title != null) {
+
+
+            return (
+                <Body>
+                    <Title>{this.props.title}</Title>
+                </Body>);
+
+
+
+        }
+
+
+    }
     renderRowFunc(data) {
         return (<ListItem>
             <Thumbnail source={require('../resources/1.png')} />
@@ -65,33 +80,44 @@ export default class BookListPageSellingPage extends Component {
                 <Text note>{data.det.productor}</Text>
             </Body>
             <Right>
-                <Button info transparent iconRight onPress={()=>{this.toDetailBook1(data);}}>
+                <Button info transparent iconRight onPress={() => { this.toDetailBook1(data); }}>
                     <Text note>{data.det.price}</Text>
                     <Icon name="ios-arrow-forward" />
                 </Button>
             </Right>
         </ListItem>);
 
-    } 
-    toHelloWord(){
-        Alert.alert("","hello world!")
+    }
+    toHelloWord() {
+        Alert.alert("", "hello world!")
 
 
-    }  
-    toDetailBook1(bookData){
-        console.log("this.props");
-        console.log(this.props);
-        console.log("bookData");
-        console.log(bookData);
-        if(this.props.uid == contant.USER.uid){
-             bookData.showBuyItem = false;//不能买自己的书
+    }
+    toDetailBook1(bookData) {
 
-        }else{
-             bookData.showBuyItem = true;//有买选项
+        if (this.props.uid == contant.USER.uid ) {
+            bookData.showBuyItem = false;//不能买自己的书
+
+        } else {
+            bookData.showBuyItem = true;//有买选项
         }
 
-       
-        bookData.showOwner=false;//展示拥有者,因为是调过来的，就不展示了
+        if (this.props.title != undefined && this.props.title != null) {
+            if (this.props.type == 3 || this.props.type == 2) {
+                bookData.showOwner = false;//正在卖和卖过的，没必要显示拥有者
+            } else {
+                
+                bookData.showOwner = true;//从
+            }
+
+
+        } else {
+                 bookData.showOwner = false;//展示拥有者,因为是调过来的，就不展示了
+
+
+        }
+
+
         var route = {
             id: contant.idList.DetailBookPage,
             passProps: bookData,

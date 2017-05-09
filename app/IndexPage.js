@@ -5,12 +5,13 @@ import {
     StyleSheet,
     View,
     ListView,
-    Navigator,
     Image,
     Alert,
     TextInput,
+    Navigator,
 
 } from 'react-native';
+
 import { Thumbnail, StyleProvider, Container, Header, Title, CheckBox, Content, Label, List, ListItem, Footer, Form, Item, FooterTab, Left, Button, Body, Right, Icon, InputGroup, Input, Card, CardItem, Text } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import * as contant from "../app/contant"
@@ -24,6 +25,12 @@ import HomePage from "../app/HomePage";
 import DetailBookPage from "../app/DetailBookPage";
 import DetailPeoplePage from "../app/DetailPeoplePage";
 import BookListPageSellingPage from "../app/BookListPageSellingPage"
+
+import NewMsgListPage from './NewMsgListPage'
+import DetialQuestionPage from "./DetialQuestionPage";
+import CommunityPage from "./CommunityPage";
+import AnswerToQuestionPage from "./AnswerToQuestionPage";
+import AddQuestionPage from "./AddQuestionPage";
 var idList = contant.idList;
 export default class IndexPage extends Component {
     constructor(props) {
@@ -60,23 +67,36 @@ export default class IndexPage extends Component {
             case idList.SearchPeoplePage: {
                 return <SearchPeoplePage navigator={navigator} {...route.passProps} />;
             }
-             case idList.SellBookPage: {
+            case idList.SellBookPage: {
                 return <SellBookPage navigator={navigator} {...route.passProps} />;
-            } 
+            }
             case idList.UserPage: {
                 return <UserPage navigator={navigator} {...route.passProps} />;
-            } 
-            case idList.DetailBookPage:{
+            }
+            case idList.DetailBookPage: {
                 return <DetailBookPage navigator={navigator} {...route.passProps} />;
             }
-            case idList.DetailPeoplePage:{
+            case idList.DetailPeoplePage: {
                 return <DetailPeoplePage navigator={navigator} {...route.passProps} />;
             }
-             case idList.BookListPageSellingPage:{
+            case idList.BookListPageSellingPage: {
                 return <BookListPageSellingPage navigator={navigator} {...route.passProps} />;
-
-
-             }
+            }
+            case idList.DetialQuestionPage: {
+                return <DetialQuestionPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.CommunityPage: {
+                return <CommunityPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.AnswerToQuestionPage: {
+                return <AnswerToQuestionPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.AddQuestionPage: {
+                return <AddQuestionPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.NewMsgListPage: {
+                return <NewMsgListPage navigator={navigator} {...route.passProps} />;
+            }
             default: {
                 return <LoginPage navigator={navigator} {...route.passProps} />;
             }
