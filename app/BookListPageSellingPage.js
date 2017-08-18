@@ -73,8 +73,9 @@ export default class BookListPageSellingPage extends Component {
 
     }
     renderRowFunc(data) {
+        console.log(data)
         return (<ListItem>
-            <Thumbnail source={require('../resources/1.png')} />
+            <Thumbnail source={{uri:contant.imageGetter(data.det.images,contant.IMAGE_TYPE.BOOK_IMAGE)}} />
             <Body>
                 <Text >{data.name}</Text>
                 <Text note>{data.det.productor}</Text>

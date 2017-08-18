@@ -262,7 +262,7 @@ export default class SearchBookPage extends Component {
 
             return (
                 <ListItem>
-                    <Thumbnail source={require('../resources/1.png')} />
+                    <Thumbnail source={contant.imageGetter(contant.getOneImage(data.det.images),contant.IMAGE_TYPE.BOOK_IMAGE)} />
                     <Body>
                         <Text >{data.name}</Text>
                         <Text note>{data.det.productor}</Text>
@@ -300,7 +300,7 @@ export default class SearchBookPage extends Component {
     }
     renderFunc_2(data) {
         return (<ListItem>
-            <Thumbnail source={require('../resources/1.png')} />
+            <Thumbnail source={contant.imageGetter(contant.getOneImage(data.det.images),contant.IMAGE_TYPE.BOOK_IMAGE)} />
             <Body>
                 <Text >{data.name}</Text>
                 <Text note>{data.det.productor}</Text>

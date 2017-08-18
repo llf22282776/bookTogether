@@ -137,7 +137,25 @@ export default class UserPage extends Component {
                                 </Button>
                             </Right>
                         </ListItem>
-
+                        <ListItem>
+                            <Left>
+                                <Icon style={{ color: "#ff6622" }} name="md-book" />
+                                <Text>我的预约/我被预约</Text>
+                            </Left>
+                            <Right>
+                                <Button transparent onPress={()=>{
+                                        var obj={
+                                            id:contant.idList.DealPage,
+                                            passProps:{},
+                                            type:"Right"
+                                        }
+                                    
+                                        this.props.navigator.push(obj)
+                                    }}>
+                                    <Icon name="md-arrow-forward" />
+                                </Button>
+                            </Right>
+                        </ListItem>
 
 
                         <ListItem itemDivider>
@@ -227,10 +245,7 @@ export default class UserPage extends Component {
 
 
     }
-    showSellingBooks() {
-
-
-    }
+  
     showBoughtBooks() {
 
 
@@ -343,6 +358,7 @@ export default class UserPage extends Component {
         }
 
     }
+    
     async showBoughtBooks() {
         //买过的书
         var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.SEARCH_BOOKS_SELLING + "?" + "uid=" + contant.USER.uid + "&type=" + 1;
@@ -374,8 +390,6 @@ export default class UserPage extends Component {
             console.log(e);
             //异常
             Alert.alert("错误", "查看卖过的书失败\n");
-
-
 
         }
 

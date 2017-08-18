@@ -16,6 +16,21 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 import * as contant from "../app/contant"
 import TabNavigator from 'react-native-tab-navigator';
 import { MapView, MapTypes, MapModule, Geolocation } from 'react-native-baidu-map';
+import  ImagePicker  from 'react-native-image-picker';
+var photoOptions = {
+    //底部弹出框选项
+    title: '请选择',
+    cancelButtonTitle: '取消',
+    takePhotoButtonTitle: '拍照',
+    chooseFromLibraryButtonTitle: '选择相册',
+    quality: 0.75,
+    allowsEditing: true,
+    noData: false,
+    storageOptions: {
+        skipBackup: true,
+        path: 'images'
+    }
+}
 export default class SellBookPage extends Component {
     constructor(props) {
         super(props);
@@ -27,6 +42,12 @@ export default class SellBookPage extends Component {
             price: 0,
             x: 0.000,
             y: 0.000,
+            pName:"未选择地点",
+            
+            imgPath:"", //图片连接字符串
+            type: 'image/jpg',
+            fileName:""
+
         }
 
         this.priceChange = this.priceChange.bind(this);
@@ -35,6 +56,11 @@ export default class SellBookPage extends Component {
         this.desChange = this.desChange.bind(this);
         this.sellBook = this.sellBook.bind(this);
         this.nameChange = this.nameChange.bind(this);
+        this.call_back=this.call_back.bind(this);
+        this.catImage=this.catImage.bind(this);
+        this.renderImage=this.renderImage.bind(this);
+        this.successFunc=this.successFunc.bind(this);
+        this.errorFunc=this.errorFunc.bind(this);
     }
     render() {
         return (
@@ -43,35 +69,48 @@ export default class SellBookPage extends Component {
                     <Title>卖书</Title>
                 </Header>
                 <Content>
-                    <Button full success transparent>
+                    <Button full success transparent onPress={this.catImage}>
                         <Icon name="md-camera" />
                         <Text>图片</Text>
                     </Button>
-                    <MapView
-                        style={contant.styles.map1}
-                        trafficEnabled={contant.mapState.trafficEnabled}
-                        baiduHeatMapEnabled={contant.mapState.baiduHeatMapEnabled}
-                        zoom={contant.mapState.zoom}
-                        mapType={contant.mapState.mayType1}
-                        center={contant.mapState.center}
+                   {
+                        this.renderImage()
 
-                        markers={[{ longitude: this.state.x, latitude: this.state.y, title: "卖书点" }]}
-                        onMarkerClick={(e) => {
-                            //点被点一下，下边列表刷新
-
-                        }}
-
-                        onMapClick={(e) => {
-                            this.setState({ x: e.longitude, y: e.latitude });
-                        }}
-                    />
-
-
-
-
-
+                   }
 
                     <List>
+                        <ListItem itemDivider>
+                            <Text>  </Text>
+                        </ListItem>
+                          <ListItem icon>
+                            <Left>
+                                <Icon name="md-map" />
+                            </Left>
+                            <Body>
+                                 <Text>{this.state.pName}</Text>
+                            </Body>
+                            <Right>
+                                <Button transparent onPress={()=>{
+                                    var obj = {
+                                        id:contant.idList.MapSurePage,
+                                        passProps:{
+                                            call_back:this.call_back,
+                                            lastPage:1,
+                                        },
+                                        type:"Right"
+
+                                    };
+                                    this.props.navigator.push(obj);
+                                    
+                                    }}>
+                                <Text>选择地点</Text>
+                                <Icon name="arrow-forward" />
+                                    </Button>
+                             </Right>
+            </ListItem>
+                          <ListItem>
+                            <Text>  </Text>
+                        </ListItem>
                         <ListItem itemDivider>
                             <Text>  </Text>
                         </ListItem>
@@ -119,7 +158,50 @@ export default class SellBookPage extends Component {
 
 
     }
+    renderImage(){
+        if(this.state.imgPath == ""){
 
+            return  <Image style={{flex:1,width:400,height:400}} source={require("../resources/2.png")} />
+                     
+        }else {
+
+            return  <Image style={{flex:1,width:400,height:400}} source={{uri:this.state.imgPath}} />
+;
+        }
+
+    }
+    catImage(){
+        //获取图片
+    //拉取图片
+        ImagePicker.showImagePicker(photoOptions, (response) => {
+      
+
+            if (response.didCancel) {
+                //取消
+            }
+            else if (response.error) {
+                //出错
+
+            }
+            else if (response.customButton) {
+              //自定义
+              response.fileName
+              console.warn(response.fileName)
+              console.warn(response.uri)
+            }
+            else {
+            
+             
+                this.setState({
+                    imgPath:response.uri, 
+                    fileName:response.fileName
+                })
+       
+
+            }
+        });
+
+    }
     desChange(data) {
         this.setState({ des: data });
     }
@@ -135,80 +217,80 @@ export default class SellBookPage extends Component {
     priceChange(data) {
         this.setState({ price: data });
     }
-    async sellBook() {
-        // var bookMsg={
-        //      name:this.state.name,
-        //      uid:contant.USER.uname,
-        //      x:this.state.x,
-        //      y:this.state.y,
-        //      det:{
-        //         des:this.state.des,
-        //         productor:this.state.productor,
-        //         company:this.state.company,
-        //         price:this.state.price,
-        //         images:[]
-        //         }
+      sellBook() {
 
-        // }
-        var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.SELL_BOOK + "?";
-        url = url + "name=" + this.state.name + "&";
-        url = url + "uid=" + contant.USER.uid + "&";
-        url = url + "x=" + this.state.x + "&";
-        url = url + "y=" + this.state.y + "&";
-        url = url + "des=" + this.state.des + "&";
-        url = url + "productor=" + this.state.productor + "&";
-        url = url + "company=" + this.state.company + "&";
-        url = url + "price=" + this.state.price;
+        var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.SELL_BOOK ;
+        console.log("url:"+url);
+        var formData =new FormData();
+        formData.append("image",{uri: this.state.imgPath, type: 'image/jpg',name: this.state.fileName});
+        formData.append("name",this.state.name);
+        formData.append("uid",contant.USER.uid);
+        formData.append("x",this.state.x);
+        formData.append("y",this.state.y);
+        formData.append("des",this.state.des);
+        formData.append("productor",this.state.productor);
+        formData.append("company",this.state.company);
+        formData.append("price",this.state.price);
 
-        var response;
-        var ud;
-        try {
-            response = await fetch(
-                url, {
-                    method: "GET",
-                });
-            console.log(response);
-            ud = await response.json();
+
+        //  var parmObj={
+        // "name":this.state.name,
+        // "uid":contant.USER.uid,
+        // "x":this.state.x,
+        // "y":this.state.y,
+        // "des":this.state.des,
+        // "productor":this.state.productor,
+        // "company":this.state.company,
+        // "price":this.state.price,
+        //  };
+        //  contant.http_get(url,parmObj,this.successFunc,this.errorFunc);
+        // try {
+        //     let response = await fetch(
+        //    url,
+        //     {
+        //         method: "POST",
+        //         body:formData,
+        //     }
             
-            var isSucceed = ud.isSucceed;
+        //     );
+
+        // let data = await response.json();
+        // var isSucceed = data.isSucceed;
+        //     if(isSucceed == "true" || isSucceed == true ){
+        //         //
+        //          Alert.alert("成功", "卖书成功\n");
+        //     }
+        // } catch (e) {
+        //      //异常
+        //     this.errorFunc(e);
+        // }
+
+
+        contant.http_post(url,formData,this.successFunc,this.errorFunc);
+
+
+
+    }
+    call_back(data){
+        this.setState({
+            x:data.x,
+            y:data.y,
+            pName:data.pName
+        });
+
+    }
+    successFunc(data){
+      var isSucceed = data.isSucceed;
             if(isSucceed == "true" || isSucceed == true ){
                 //
                  Alert.alert("成功", "卖书成功\n");
-
             }
-        
-        } catch (e) {
-            console.log(response);
+    }
+    errorFunc(e){
+
             console.log(e);
             //异常
             Alert.alert("错误", "卖书失败\n");
-        }
-
-
-
-
-
-        var bookMsg = {
-            bid: 3,
-            uname: contant.USER.name,
-            name: this.state.name,
-            uid: contant.USER.uname,
-            x: this.state.x,
-            y: this.state.y,
-            det: {
-                des: this.state.des,
-                productor: this.state.productor,
-                company: this.state.company,
-                price: this.state.price,
-                images: []
-            },
-            comt: []
-
-        }
-
-        contant.bookList_test.push(bookMsg);
-
-
 
 
     }

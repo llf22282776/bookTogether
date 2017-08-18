@@ -31,6 +31,18 @@ import DetialQuestionPage from "./DetialQuestionPage";
 import CommunityPage from "./CommunityPage";
 import AnswerToQuestionPage from "./AnswerToQuestionPage";
 import AddQuestionPage from "./AddQuestionPage";
+
+import CoversionFromPage from "./CoversionFromPage";
+import CoversionToPage from "./CoversionToPage";
+import DealFromDetailPage from "./DealFromDetailPage";
+import DealFromMePage from "./DealFromMePage";
+import DealPage from "./DealPage";
+import DealToDetailPage from "./DealToDetailPage";
+import DealToMePage from "./DealToMePage";
+import TimeSuerPage from "./TimeSuerPage";
+import MapSurePage from "./MapSurePage";
+
+
 var idList = contant.idList;
 export default class IndexPage extends Component {
     constructor(props) {
@@ -96,6 +108,33 @@ export default class IndexPage extends Component {
             }
             case idList.NewMsgListPage: {
                 return <NewMsgListPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.CoversionFromPage: {
+                return <CoversionFromPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.CoversionToPage: {
+                return <CoversionToPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.DealFromDetailPage: {
+                return <DealFromDetailPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.DealFromMePage: {
+                return <DealFromMePage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.DealPage: {
+                return <DealPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.DealToDetailPage: {
+                return <DealToDetailPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.DealToMePage: {
+                return <DealToMePage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.TimeSuerPage: {
+                return <TimeSuerPage navigator={navigator} {...route.passProps} />;
+            }
+            case idList.MapSurePage: {
+                return <MapSurePage navigator={navigator} {...route.passProps} />;
             }
             default: {
                 return <LoginPage navigator={navigator} {...route.passProps} />;

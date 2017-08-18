@@ -96,6 +96,7 @@ export default class LoginPage extends Component {
             contant.USER.age = ud.age;
             contant.USER.rank = ud.rank;
             contant.USER.restMoney = ud.restMoney;
+            contant.USER.uname =  ud.uid;
         //下来是社区登陆```````````````````````````````
         url = contant.SERVER_COMMUNITY + contant.SERVER_SERVICE.LOG_IN_COMMUNITY + "?" + "passPort=" + this.state.uid + "&pwd=" + this.state.pwd;
 
@@ -140,7 +141,8 @@ export default class LoginPage extends Component {
             contant.USER.age = 16;
             contant.USER.rank = 1880;
             contant.USER.restMoney = 660;
-            Alert.alert("错误", "社区登陆失败\n");
+            console.warn(e)
+            Alert.alert("错误", "社区登陆异常\n");
         }
 
 

@@ -58,6 +58,8 @@ export default class DetailBookPage extends Component {
         this.renderRowFunc = this.renderRowFunc.bind(this);
         this.showOwnerOrNot = this.showOwnerOrNot.bind(this);
         this.showBuyOptions = this.showBuyOptions.bind(this);
+        this.callback_success=this.callback_success.bind(this);
+        this.error_func=this.error_func.bind(this);
     }
     render() {
         return (
@@ -77,7 +79,7 @@ export default class DetailBookPage extends Component {
                 <Content>
                     <Card>
                         <CardItem cardBody>
-                            <Image style={{ width: 400, height: 400 }} source={require('../resources/2.png')} />
+                            <Image style={{ width: 400, height: 400 }} source={{uri:contant.imageGetter(contant.getOneImage(this.props.det.images),contant.IMAGE_TYPE.BOOK_IMAGE)}} />
                         </CardItem>
                         <CardItem content>
                             <Text>{this.props.det.des}</Text>
@@ -171,7 +173,7 @@ export default class DetailBookPage extends Component {
     async toBuy() {
         //买书
                 //买过的书
-        var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.BUY_BOOK + "?" + "uid=" + contant.USER.uid + "&bid=" + this.state.bid + "&time="+contant.getNowFormatDate() ;
+        var url = contant.SERVER_ROOT + contant.SERVER_SERVICE.IS_IN_DEALING + "?"+ "bid=" + this.state.bid+"&uid="+contant.USER.uname ;
         var response;
         var ud;
         try {
@@ -181,19 +183,72 @@ export default class DetailBookPage extends Component {
                 });
            
             ud = await response.json();
-            if(ud.isSucceed == "true" || ud.isSucceed == true){
+           if(ud.candeal == false || ud.candeal == "false"){
+                if(ud.isInYourDeal ==true ||ud.isInYourDeal =="true"){
+                    //在自己的交易里面
+                     //直接进入下个页面
+                     console.warn("xx")
+                    var obj={
+                        id:contant.idList.CoversionFromPage,
+                        passProps:{
+                            rid:ud.rid //只需要这个
+                        },
+                        type:"Right"
 
-                  Alert.alert("成功","您的余额还有:"+ud.restMoney);
-                  this.toLast();
+                    }
+                    this.props.navigator.push(obj);//拉取coversion，进去下一个页面
+                }else {
+                    //不可交易
+                    Alert.alert("提示","无法交易");
+                }
+
+           }else {
+                //可以交易
+                 var parm={
+                    "uid":contant.USER.uname,
+                    "bid":this.state.bid,
+                    "x":0,
+                    "y":0,
+                    "pname":"",
+                    "time":"2014-07-11 00:00:00",
+                 }
                  
-            }else {
-                  Alert.alert("失败","您的余额不足");
-                  this.toLast();
-               
-            }
+              //   contant.http_get(contant.SERVER_ROOT+contant.SERVER_SERVICE.BUY_BOOK,parm,callback_success,error_func);
+
+              try{
+                var url1= contant.SERVER_ROOT+contant.SERVER_SERVICE.BUY_BOOK+"?"+"uid="+contant.USER.uname+"&bid="+this.state.bid+"&x="+0+"&y="+0+"&pname="+" &time="+"2014-07-11 00:00:00";
+                var  response1 = await fetch(
+                                 url1, {
+                                 method: "GET",
+                                });
+                            var data= await response1.json();
+                            console.warn(data.isSucceed);
+                     if(data.isSucceed == "true" || data.isSucceed == true  ){
+                            
+                            var obj={
+                                    id:contant.idList.CoversionFromPage,
+                                    passProps:{
+                                        rid:data.rid //只需要这个
+                                    },
+                                    type:"Right"
+
+                                }
+                                this.props.navigator.push(obj);//拉取coversion，进去下一个页面
+                    }else {
+                            Alert.alert("错误","无法交易!");
+
+                    }
+              }catch(e){
+                   console.log(e)
+
+
+              }
+
+
+           }
         } catch (e) {
-            console.log(response);
-            console.log(e);
+   
+           console.log(e);
             //异常
             Alert.alert("错误", "买书失败\n");
 
@@ -201,6 +256,29 @@ export default class DetailBookPage extends Component {
 
         }
 
+
+    }
+    callback_success(data){
+        
+         if(data.isSucceed == "true" || data.isSucceed == true  ){
+            
+                 var obj={
+                        id:contant.idList.CoversionFromPage,
+                        passProps:{
+                            rid:data.rid //只需要这个
+                        },
+                        type:"Right"
+
+                    }
+                    this.props.navigator.push(obj);//拉取coversion，进去下一个页面
+         }else {
+                 Alert("错误","无法交易!");
+
+         }
+
+    }
+    error_func(){
+        Alert("错误","无法交易!");
 
     }
     async  toDetailPeople() {
